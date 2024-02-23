@@ -2,6 +2,7 @@ package com.example.orders.cliente;
 
 import com.cloudinary.Cloudinary;
 import com.example.orders.payloads.entities.ClienteDTO;
+import com.example.orders.user.User;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,18 +26,25 @@ public class ClienteService {
 if(clienteRepository.findByEmail(clienteDTO.email()).isPresent()){
     throw new BadRequestException("Utente con email " + clienteDTO.email() + " già presente.");
 }
-Cliente cliente = new Cliente();
-cliente.setNome(clienteDTO.nome());
-cliente.setCognome(clienteDTO.cognome());
-cliente.setEmail(clienteDTO.email());
-cliente.setEta(clienteDTO.eta());
+
+        String imageUrl;
         try {
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-            String imageUrl = (String) uploadResult.get("url");
-            cliente.setImmagine_profilo(imageUrl);
+           imageUrl = (String) uploadResult.get("url");
         } catch (IOException e) {
             throw new RuntimeException("Impossibile caricare l'immagine", e);
         }
+Cliente cliente = new Cliente(
+       clienteDTO.nome(),
+        clienteDTO.cognome(),
+        clienteDTO.eta(),
+        "",
+        clienteDTO.email(),
+       imageUrl
+        );
+
+
+
     return cliente;
     }
 
