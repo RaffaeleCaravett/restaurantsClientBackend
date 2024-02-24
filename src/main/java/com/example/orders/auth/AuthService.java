@@ -8,14 +8,13 @@ import com.example.orders.enums.Role;
 import com.example.orders.enums.TipoEsercizio;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
 import com.example.orders.esercizioCommerciale.EsericizioCommercialeRepository;
-import com.example.orders.payloads.entities.ClienteDTO;
-import com.example.orders.payloads.entities.EsercizioCommercialeDTO;
-import com.example.orders.payloads.entities.SchedaAnagraficaDTO;
+import com.example.orders.payloads.entities.*;
 import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
 import com.example.orders.schedaAnagrafica.SchedaAnagraficaRepository;
 import com.example.orders.schedaAnagrafica.SchedaAnagraficaService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +34,8 @@ public class AuthService {
 
     @Autowired
     SchedaAnagraficaRepository schedaAnagraficaRepository;
+    @Autowired
+    private PasswordEncoder bcrypt;
 
     public Cliente save(ClienteDTO clienteDTO, MultipartFile file) throws BadRequestException {
         if(clienteRepository.findByEmail(clienteDTO.email()).isPresent()){
@@ -45,6 +46,7 @@ public class AuthService {
         cliente.setCognome(clienteDTO.cognome());
         cliente.setEmail(clienteDTO.email());
         cliente.setEta(clienteDTO.eta());
+        cliente.setPassword(bcrypt.encode(clienteDTO.password()));
         try {
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             String imageUrl = (String) uploadResult.get("url");
@@ -66,6 +68,7 @@ public class AuthService {
         esercizioCommerciale.setTipoEsercizio(TipoEsercizio.valueOf(esercizioCommercialeDTO.tipoEsercizio()));
 esercizioCommerciale.setIndirizzo(esercizioCommercialeDTO.indirizzo());
 esercizioCommerciale.setRole(Role.Attivita);
+esercizioCommerciale.setPassword(bcrypt.encode(esercizioCommercialeDTO.password()));
         try {
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             String imageUrl = (String) uploadResult.get("url");
@@ -87,12 +90,31 @@ esercizioCommerciale.setRole(Role.Attivita);
 }    else {
     throw new BadRequestException("esercizio con id " + schedaAnagraficaDTO.esercizio_id() + " non presente");
 }
-
     schedaAnagrafica.setEsercizioCommerciale(esercizioCommerciale);
-
         return schedaAnagraficaRepository.save(schedaAnagrafica);
-
     }
-
-
+    public Token authenticateCliente(UserLoginDTO body) throws Exception {
+        // 1. Verifichiamo che l'email dell'utente sia nel db
+       Cliente user = clienteRepository.findByEmail(body.email()).get();
+        // 2. In caso affermativo, verifichiamo se la password corrisponde a quella trovata nel db
+        if(bcrypt.matches(body.password(), user.getPassword()))  {
+            // 3. Se le credenziali sono OK --> Genero un JWT e lo restituisco
+            return jwtTools.createToken(user);
+        } else {
+            // 4. Se le credenziali NON sono OK --> 401
+            throw new UnauthorizedException("Credenziali non valide!");
+        }
+    }
+    public Token authenticateEsercizio(UserLoginDTO body) throws Exception {
+        // 1. Verifichiamo che l'email dell'utente sia nel db
+        EsercizioCommerciale user = esericizioCommercialeRepository.findByEmail(body.email()).get();
+        // 2. In caso affermativo, verifichiamo se la password corrisponde a quella trovata nel db
+        if(bcrypt.matches(body.password(), user.getPassword()))  {
+            // 3. Se le credenziali sono OK --> Genero un JWT e lo restituisco
+            return jwtTools.createToken(user);
+        } else {
+            // 4. Se le credenziali NON sono OK --> 401
+            throw new UnauthorizedException("Credenziali non valide!");
+        }
+    }
 }
