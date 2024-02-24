@@ -8,6 +8,7 @@ import com.example.orders.enums.Role;
 import com.example.orders.enums.TipoEsercizio;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
 import com.example.orders.esercizioCommerciale.EsericizioCommercialeRepository;
+import com.example.orders.exceptions.UnauthorizedException;
 import com.example.orders.payloads.entities.*;
 import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
 import com.example.orders.schedaAnagrafica.SchedaAnagraficaRepository;
