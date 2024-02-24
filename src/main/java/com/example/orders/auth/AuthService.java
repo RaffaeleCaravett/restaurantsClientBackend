@@ -10,6 +10,10 @@ import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
 import com.example.orders.esercizioCommerciale.EsericizioCommercialeRepository;
 import com.example.orders.payloads.entities.ClienteDTO;
 import com.example.orders.payloads.entities.EsercizioCommercialeDTO;
+import com.example.orders.payloads.entities.SchedaAnagraficaDTO;
+import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
+import com.example.orders.schedaAnagrafica.SchedaAnagraficaRepository;
+import com.example.orders.schedaAnagrafica.SchedaAnagraficaService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,9 @@ public class AuthService {
     EsericizioCommercialeRepository esericizioCommercialeRepository;
     @Autowired
     private Cloudinary cloudinary;
+
+    @Autowired
+    SchedaAnagraficaRepository schedaAnagraficaRepository;
 
     public Cliente save(ClienteDTO clienteDTO, MultipartFile file) throws BadRequestException {
         if(clienteRepository.findByEmail(clienteDTO.email()).isPresent()){
@@ -68,4 +75,24 @@ esercizioCommerciale.setRole(Role.Attivita);
         }
         return esercizioCommerciale;
     }
+
+    public SchedaAnagrafica saveAnagrafica(SchedaAnagraficaDTO schedaAnagraficaDTO) throws BadRequestException {
+        SchedaAnagrafica schedaAnagrafica = new SchedaAnagrafica();
+        schedaAnagrafica.setCapitaleSociale(schedaAnagraficaDTO.capitaleSociale());
+        schedaAnagrafica.setPIva(schedaAnagraficaDTO.pIva());
+        schedaAnagrafica.setRappresentante(schedaAnagraficaDTO.rappresentante());
+        EsercizioCommerciale esercizioCommerciale = new EsercizioCommerciale();
+        if(esericizioCommercialeRepository.findById(schedaAnagraficaDTO.esercizio_id()).isPresent()) {
+   esercizioCommerciale = esericizioCommercialeRepository.findById(schedaAnagraficaDTO.esercizio_id()).get();
+}    else {
+    throw new BadRequestException("esercizio con id " + schedaAnagraficaDTO.esercizio_id() + " non presente");
+}
+
+    schedaAnagrafica.setEsercizioCommerciale(esercizioCommerciale);
+
+        return schedaAnagraficaRepository.save(schedaAnagrafica);
+
+    }
+
+
 }
