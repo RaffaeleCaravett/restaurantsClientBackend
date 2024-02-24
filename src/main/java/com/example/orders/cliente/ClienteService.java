@@ -22,31 +22,7 @@ public class ClienteService {
     @Autowired
     private Cloudinary cloudinary;
 
-    public Cliente save(ClienteDTO clienteDTO, MultipartFile file) throws BadRequestException {
-if(clienteRepository.findByEmail(clienteDTO.email()).isPresent()){
-    throw new BadRequestException("Utente con email " + clienteDTO.email() + " già presente.");
-}
 
-        String imageUrl;
-        try {
-            Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-           imageUrl = (String) uploadResult.get("url");
-        } catch (IOException e) {
-            throw new RuntimeException("Impossibile caricare l'immagine", e);
-        }
-Cliente cliente = new Cliente(
-       clienteDTO.nome(),
-        clienteDTO.cognome(),
-        clienteDTO.eta(),
-        "",
-        clienteDTO.email(),
-       imageUrl
-        );
-
-
-
-    return cliente;
-    }
 
     public boolean deleteById(long id){
         try{

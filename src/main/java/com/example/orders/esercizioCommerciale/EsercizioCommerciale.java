@@ -1,27 +1,28 @@
 package com.example.orders.esercizioCommerciale;
 
+import com.example.orders.enums.Role;
 import com.example.orders.enums.TipoEsercizio;
+import com.example.orders.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.apache.catalina.Role;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "esercizi_commerciali")
-@Data
-public class EsercizioCommerciale {
+@Getter
+@Setter
+@NoArgsConstructor
+public class EsercizioCommerciale extends User {
 
-    private String nome;
     @Enumerated(EnumType.STRING)
     private TipoEsercizio tipoEsercizio;
     private String indirizzo;
-    private String immagine;
 
-
-
+    public EsercizioCommerciale(long id, String email, String password, String nome, Role role, String immagine_profilo, TipoEsercizio tipoEsercizio, String indirizzo) {
+        super(id, email, password, nome, role, immagine_profilo);
+        this.tipoEsercizio = tipoEsercizio;
+        this.indirizzo = indirizzo;
+    }
 }

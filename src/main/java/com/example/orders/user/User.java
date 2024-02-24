@@ -23,8 +23,10 @@ public  class User implements UserDetails {
     private long id;
     private String email;
     private String password;
+    private String nome;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private String immagine_profilo;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
