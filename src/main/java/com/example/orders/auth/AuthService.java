@@ -13,6 +13,7 @@ import com.example.orders.payloads.entities.*;
 import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
 import com.example.orders.schedaAnagrafica.SchedaAnagraficaRepository;
 import com.example.orders.schedaAnagrafica.SchedaAnagraficaService;
+import com.example.orders.security.JWTTools;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +33,8 @@ public class AuthService {
     EsericizioCommercialeRepository esericizioCommercialeRepository;
     @Autowired
     private Cloudinary cloudinary;
-
+@Autowired
+    JWTTools jwtTools;
     @Autowired
     SchedaAnagraficaRepository schedaAnagraficaRepository;
     @Autowired
