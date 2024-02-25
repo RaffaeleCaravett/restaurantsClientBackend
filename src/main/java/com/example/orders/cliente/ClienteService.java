@@ -22,8 +22,6 @@ public class ClienteService {
     @Autowired
     private Cloudinary cloudinary;
 
-
-
     public boolean deleteById(long id){
         try{
             clienteRepository.deleteById(id);
