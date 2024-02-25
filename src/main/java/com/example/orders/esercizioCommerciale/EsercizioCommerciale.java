@@ -4,6 +4,7 @@ import com.example.orders.citta.Citta;
 import com.example.orders.cliente.Cliente;
 import com.example.orders.enums.Role;
 import com.example.orders.enums.TipoEsercizio;
+import com.example.orders.prodotto.Prodotto;
 import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
 import com.example.orders.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,11 +33,16 @@ public class EsercizioCommerciale extends User {
     @ManyToOne
     @JoinColumn(name="citta_id")
     private Citta citta;
-    public EsercizioCommerciale(long id, String email, String password, String nome, Role role, String immagine_profilo, TipoEsercizio tipoEsercizio, String indirizzo,SchedaAnagrafica schedaAnagrafica,Citta citta) {
+    @OneToMany(mappedBy = "esercizioCommerciale")
+    private List<Prodotto> prodottos;
+    public EsercizioCommerciale(long id, String email, String password, String nome, Role role, String immagine_profilo, TipoEsercizio tipoEsercizio, String indirizzo,SchedaAnagrafica schedaAnagrafica,Citta citta,
+    List<Cliente> clienti,List<Prodotto> prodotti) {
         super(id, email, password, nome, role, immagine_profilo);
         this.tipoEsercizio = tipoEsercizio;
         this.indirizzo = indirizzo;
         this.schedaAnagrafica=schedaAnagrafica;
         this.citta=citta;
+        this.clienteList=clienti;
+        this.prodottos=prodotti;
     }
 }

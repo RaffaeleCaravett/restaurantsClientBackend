@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.prefs.BackingStoreException;
 
@@ -54,6 +55,8 @@ public class AuthService {
         cliente.setEta(clienteDTO.eta());
         cliente.setCitta(cittaRepository.findById(clienteDTO.citta_id()).get());
         cliente.setPassword(bcrypt.encode(clienteDTO.password()));
+        cliente.setProdotti(new ArrayList<>());
+        cliente.setEsercizioCommercialeList(new ArrayList<>());
         try {
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             String imageUrl = (String) uploadResult.get("url");

@@ -1,8 +1,8 @@
-package com.example.orders.prodotto;
+package com.example.orders.ingrediente;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProdottoRepository extends JpaRepository<Prodotto,Long> {
+public interface IngredienteRepository extends JpaRepository<Ingrediente,Long> {
 }

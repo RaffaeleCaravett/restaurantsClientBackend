@@ -3,7 +3,9 @@ package com.example.orders.cliente;
 import com.example.orders.citta.Citta;
 import com.example.orders.enums.Role;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
+import com.example.orders.prodotto.Prodotto;
 import com.example.orders.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,10 +31,19 @@ joinColumns = @JoinColumn(name="user_id"),
         inverseJoinColumns = @JoinColumn(name = "esercizio_id"),
         inverseForeignKey = @ForeignKey(name = "user_id"))
 private List<EsercizioCommerciale> esercizioCommercialeList;
-    public Cliente(long id, String email, String password,String nome, Role role, String immagine_profilo, String cognome, int eta,Citta citta) {
+@ManyToMany
+@JsonIgnore
+@JoinTable(name = "cliente_prodotto",
+joinColumns = @JoinColumn(name="cliente_id"),
+inverseJoinColumns = @JoinColumn(name = "prodotto_id"))
+private List<Prodotto> prodotti;
+    public Cliente(long id, String email, String password,String nome, Role role, String immagine_profilo, String cognome, int eta,Citta citta,List<EsercizioCommerciale> esercizioCommercialeList,
+                   List<Prodotto> prodottos) {
         super(id, email, password,nome, role,immagine_profilo);
         this.cognome = cognome;
         this.eta = eta;
     this.citta=citta;
+    this.esercizioCommercialeList=esercizioCommercialeList;
+    this.prodotti=prodottos;
     }
 }

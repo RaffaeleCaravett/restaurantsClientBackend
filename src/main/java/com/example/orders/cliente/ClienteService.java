@@ -2,7 +2,11 @@ package com.example.orders.cliente;
 
 import com.cloudinary.Cloudinary;
 import com.example.orders.citta.CittaRepository;
+import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
+import com.example.orders.esercizioCommerciale.EsericizioCommercialeRepository;
 import com.example.orders.payloads.entities.ClienteDTO;
+import com.example.orders.prodotto.Prodotto;
+import com.example.orders.prodotto.ProdottoRepository;
 import com.example.orders.user.User;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.utils.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.io.IOException;
@@ -22,6 +27,10 @@ public class ClienteService {
     ClienteRepository clienteRepository;
     @Autowired
     private Cloudinary cloudinary;
+    @Autowired
+    EsericizioCommercialeRepository esericizioCommercialeRepository;
+    @Autowired
+    ProdottoRepository prodottoRepository;
 @Autowired
     CittaRepository cittaRepository;
     public boolean deleteById(long id){
@@ -77,4 +86,28 @@ public Cliente updateImage(long id,MultipartFile file) throws BadRequestExceptio
 public List<Cliente> findByCittaId(long citta_id){
         return clienteRepository.findByCitta_Id(citta_id);
 }
+
+public EsercizioCommerciale addToBusiness(long cliente_id,long esercizio_id) throws BadRequestException {
+        if(esericizioCommercialeRepository.findById(esercizio_id).isPresent()&&clienteRepository.findById(cliente_id).isPresent()){
+
+           Cliente cliente= clienteRepository.findById(cliente_id).get();
+           cliente.getEsercizioCommercialeList().add(esericizioCommercialeRepository.findById(esercizio_id).get());
+clienteRepository.save(cliente);
+return esericizioCommercialeRepository.findById(esercizio_id).get();
+        }else {
+            throw new BadRequestException("Cliente o esercizio non presenti a db");
+        }
+}
+
+    public Prodotto addToProdotti(long cliente_id, long prodotto_id) throws BadRequestException {
+        if(prodottoRepository.findById(prodotto_id).isPresent()&&clienteRepository.findById(cliente_id).isPresent()){
+
+            Cliente cliente= clienteRepository.findById(cliente_id).get();
+            cliente.getProdotti().add(prodottoRepository.findById(prodotto_id).get());
+            clienteRepository.save(cliente);
+            return prodottoRepository.findById(prodotto_id).get();
+        }else {
+            throw new BadRequestException("Cliente o prodotto non presenti a db");
+        }
+    }
 }
