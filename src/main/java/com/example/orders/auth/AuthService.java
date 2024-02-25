@@ -2,6 +2,7 @@ package com.example.orders.auth;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.orders.citta.CittaRepository;
 import com.example.orders.cliente.Cliente;
 import com.example.orders.cliente.ClienteRepository;
 import com.example.orders.enums.Role;
@@ -33,6 +34,8 @@ public class AuthService {
     EsericizioCommercialeRepository esericizioCommercialeRepository;
     @Autowired
     private Cloudinary cloudinary;
+    @Autowired
+    CittaRepository cittaRepository;
 @Autowired
     JWTTools jwtTools;
     @Autowired
@@ -49,6 +52,7 @@ public class AuthService {
         cliente.setCognome(clienteDTO.cognome());
         cliente.setEmail(clienteDTO.email());
         cliente.setEta(clienteDTO.eta());
+        cliente.setCitta(cittaRepository.findById(clienteDTO.citta_id()).get());
         cliente.setPassword(bcrypt.encode(clienteDTO.password()));
         try {
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
@@ -71,6 +75,7 @@ public class AuthService {
         esercizioCommerciale.setTipoEsercizio(TipoEsercizio.valueOf(esercizioCommercialeDTO.tipoEsercizio()));
 esercizioCommerciale.setIndirizzo(esercizioCommercialeDTO.indirizzo());
 esercizioCommerciale.setRole(Role.Attivita);
+esercizioCommerciale.setCitta(cittaRepository.findById(esercizioCommercialeDTO.citta_id()).get());
 esercizioCommerciale.setPassword(bcrypt.encode(esercizioCommercialeDTO.password()));
         try {
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());

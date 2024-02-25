@@ -1,6 +1,7 @@
 package com.example.orders.cliente;
 
 import com.cloudinary.Cloudinary;
+import com.example.orders.citta.CittaRepository;
 import com.example.orders.payloads.entities.ClienteDTO;
 import com.example.orders.user.User;
 import org.apache.coyote.BadRequestException;
@@ -21,7 +22,8 @@ public class ClienteService {
     ClienteRepository clienteRepository;
     @Autowired
     private Cloudinary cloudinary;
-
+@Autowired
+    CittaRepository cittaRepository;
     public boolean deleteById(long id){
         try{
             clienteRepository.deleteById(id);
@@ -38,6 +40,7 @@ public class ClienteService {
             cliente.setNome(clienteDTO.nome());
             cliente.setCognome(clienteDTO.cognome());
             cliente.setEmail(clienteDTO.email());
+            cliente.setCitta(cittaRepository.findById(clienteDTO.citta_id()).get());
             return cliente;
         }else {
             throw new BadRequestException("Impossibile trovare il cliente con id " + id);
@@ -69,5 +72,9 @@ public Cliente updateImage(long id,MultipartFile file) throws BadRequestExceptio
         }else{
             throw new BadRequestException("Utente con id " + id + " non trovato");
         }
+}
+
+public List<Cliente> findByCittaId(long citta_id){
+        return clienteRepository.findByCitta_Id(citta_id);
 }
 }

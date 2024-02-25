@@ -13,6 +13,8 @@ public record ClienteDTO(
 @NotEmpty(message = "password vuota")
         String password,
 @NotNull(message = "età vuota")
-        int eta
+        int eta,
+@NotNull(message = "città vuota")
+long citta_id
 ) {
 }

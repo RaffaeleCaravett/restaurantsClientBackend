@@ -50,6 +50,10 @@ EsercizioCommercialeService esercizioCommercialeService;
     public EsercizioCommerciale updateImageById(@PathVariable long id, MultipartFile file) throws BadRequestException {
         return esercizioCommercialeService.updateImage(id,file);
     }
+    @GetMapping("/esercizio/{id}")
+    public List<EsercizioCommerciale> getByCittaId(@PathVariable long citta_id){
+        return esercizioCommercialeService.findByCittaId(citta_id);
+    }
     @GetMapping("/clienti/{id}")
     public List<Cliente> getAll(@PathVariable long id) throws BadRequestException {
         return esercizioCommercialeService.getClientiByEsercizioId(id);

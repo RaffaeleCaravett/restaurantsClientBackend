@@ -2,6 +2,7 @@ package com.example.orders.esercizioCommerciale;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.orders.citta.CittaRepository;
 import com.example.orders.cliente.Cliente;
 import com.example.orders.enums.TipoEsercizio;
 import com.example.orders.payloads.entities.EsercizioCommercialeDTO;
@@ -23,6 +24,8 @@ public class EsercizioCommercialeService {
     EsericizioCommercialeRepository esericizioCommercialeRepository;
     @Autowired
     private Cloudinary cloudinary;
+    @Autowired
+    CittaRepository cittaRepository;
 public EsercizioCommerciale putById(long id, EsercizioCommercialeDTO esercizioCommercialeDTO) throws BadRequestException {
     if(esericizioCommercialeRepository.findById(id).isPresent()){
         EsercizioCommerciale esercizioCommerciale= esericizioCommercialeRepository.findById(id).get();
@@ -35,6 +38,7 @@ public EsercizioCommerciale putById(long id, EsercizioCommercialeDTO esercizioCo
 esercizioCommerciale.setTipoEsercizio(TipoEsercizio.valueOf(esercizioCommercialeDTO.tipoEsercizio()));
         esercizioCommerciale.setIndirizzo(esercizioCommercialeDTO.indirizzo());
         esercizioCommerciale.setNome(esercizioCommercialeDTO.nome());
+        esercizioCommerciale.setCitta(cittaRepository.findById(esercizioCommercialeDTO.citta_id()).get());
         return esericizioCommercialeRepository.save(esercizioCommerciale);
     }else{
         throw new BadRequestException("Esercizio con id " + id + " non presente in db.");
@@ -87,5 +91,8 @@ public Page<EsercizioCommerciale> getAllPaginated(Pageable pageable){
         }else{
             throw new BadRequestException("Utente con id " + id + " non trovato");
         }
+    }
+    public List<EsercizioCommerciale> findByCittaId(long citta_id){
+    return esericizioCommercialeRepository.findByCitta_Id(citta_id);
     }
 }

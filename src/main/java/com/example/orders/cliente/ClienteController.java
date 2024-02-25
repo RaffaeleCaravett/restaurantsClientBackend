@@ -1,5 +1,6 @@
 package com.example.orders.cliente;
 
+import com.example.orders.citta.Citta;
 import com.example.orders.payloads.entities.ClienteDTO;
 import lombok.Getter;
 import org.apache.coyote.BadRequestException;
@@ -45,7 +46,10 @@ public Page<Cliente> getAllPaginated(@RequestParam(defaultValue = "0") int page,
         Pageable pageable = PageRequest.of(page,size, Sort.by(orderBy));
         return clienteService.getAllPaginated(pageable);
     }
-
+@GetMapping("/citta/{id}")
+public List<Cliente> getByCittaId(@PathVariable long citta_id){
+    return clienteService.findByCittaId(citta_id);
+}
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('Cliente','Attivita')")
     public List<Cliente> getAll(){

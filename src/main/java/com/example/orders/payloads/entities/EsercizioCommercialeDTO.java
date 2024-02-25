@@ -1,6 +1,7 @@
 package com.example.orders.payloads.entities;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public record EsercizioCommercialeDTO(@NotEmpty(message = "nome vuoto")
                                       String nome,
@@ -13,6 +14,8 @@ public record EsercizioCommercialeDTO(@NotEmpty(message = "nome vuoto")
                                      @NotEmpty(message = "indirizzo vuoto")
                                       String indirizzo,
                                       @NotEmpty(message="tipo esercizio vuoto")
-                                      String tipoEsercizio
+                                      String tipoEsercizio,
+                                      @NotNull(message = "città vuota")
+                                      long citta_id
                                       ) {
 }
