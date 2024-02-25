@@ -1,5 +1,6 @@
 package com.example.orders.esercizioCommerciale;
 
+import com.example.orders.acquisto.Acquisto;
 import com.example.orders.citta.Citta;
 import com.example.orders.cliente.Cliente;
 import com.example.orders.enums.Role;
@@ -35,14 +36,14 @@ public class EsercizioCommerciale extends User {
     private Citta citta;
     @OneToMany(mappedBy = "esercizioCommerciale")
     private List<Prodotto> prodottos;
-    public EsercizioCommerciale(long id, String email, String password, String nome, Role role, String immagine_profilo, TipoEsercizio tipoEsercizio, String indirizzo,SchedaAnagrafica schedaAnagrafica,Citta citta,
-    List<Cliente> clienti,List<Prodotto> prodotti) {
+    @OneToMany(mappedBy = "esercizioCommerciale")
+    @JsonIgnore
+    private Acquisto acquisto;
+    public EsercizioCommerciale(long id, String email, String password, String nome, Role role, String immagine_profilo, TipoEsercizio tipoEsercizio, String indirizzo,SchedaAnagrafica schedaAnagrafica,Citta citta) {
         super(id, email, password, nome, role, immagine_profilo);
         this.tipoEsercizio = tipoEsercizio;
         this.indirizzo = indirizzo;
         this.schedaAnagrafica=schedaAnagrafica;
         this.citta=citta;
-        this.clienteList=clienti;
-        this.prodottos=prodotti;
     }
 }

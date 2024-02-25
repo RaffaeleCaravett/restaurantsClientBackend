@@ -1,5 +1,6 @@
 package com.example.orders.prodotto;
 
+import com.example.orders.acquisto.Acquisto;
 import com.example.orders.cliente.Cliente;
 import com.example.orders.enums.TipoProdotto;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
@@ -32,5 +33,6 @@ public class Prodotto {
     private List<Ingrediente> ingredientes;
     @ManyToMany(mappedBy = "prodotti")
     private List<Cliente> clienteList;
-
+    @ManyToMany(mappedBy = "prodottos")
+    private List<Acquisto> acquistos;
 }

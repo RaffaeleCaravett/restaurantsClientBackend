@@ -1,5 +1,6 @@
 package com.example.orders.cliente;
 
+import com.example.orders.acquisto.Acquisto;
 import com.example.orders.citta.Citta;
 import com.example.orders.enums.Role;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
@@ -37,13 +38,13 @@ private List<EsercizioCommerciale> esercizioCommercialeList;
 joinColumns = @JoinColumn(name="cliente_id"),
 inverseJoinColumns = @JoinColumn(name = "prodotto_id"))
 private List<Prodotto> prodotti;
-    public Cliente(long id, String email, String password,String nome, Role role, String immagine_profilo, String cognome, int eta,Citta citta,List<EsercizioCommerciale> esercizioCommercialeList,
-                   List<Prodotto> prodottos) {
+@OneToMany(mappedBy = "cliente")
+@JsonIgnore
+private Acquisto acquisto;
+    public Cliente(long id, String email, String password,String nome, Role role, String immagine_profilo, String cognome, int eta,Citta citta) {
         super(id, email, password,nome, role,immagine_profilo);
         this.cognome = cognome;
         this.eta = eta;
     this.citta=citta;
-    this.esercizioCommercialeList=esercizioCommercialeList;
-    this.prodotti=prodottos;
     }
 }
