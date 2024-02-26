@@ -27,6 +27,6 @@ public interface AcquistoRepository extends JpaRepository<Acquisto,Long> {
 
     List<Acquisto> findByEsercizioCommerciale_IdAndAnnoAndMeseAndGiorno(long esercizioCommerciale_id,int anno,int mese, int giorno);
 List<Acquisto> findByTotaleGreaterThan(double totale);
-    List<Acquisto> findByTotaleLowerThan(double totale);
+    List<Acquisto> findByTotaleLessThan(double totale);
     List<Acquisto> findByTotaleBetween(double totale1, double totale2);
 }

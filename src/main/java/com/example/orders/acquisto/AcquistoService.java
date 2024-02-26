@@ -119,4 +119,13 @@ public class AcquistoService {
     public List<Acquisto> getByEsercizioAndAnnoAndMese(long id,int anno,int mese){
         return acquistoRepository.findByEsercizioCommerciale_IdAndAnnoAndMese(id,anno,mese);
     }
+    public List<Acquisto> findByTotaleGreaterThan(double totale){
+        return  acquistoRepository.findByTotaleGreaterThan(totale);
+    }
+    public List<Acquisto> findByTotaleLessThan(double totale){
+        return  acquistoRepository.findByTotaleLessThan(totale);
+    }
+    public List<Acquisto> findByTotaleBetween(double totale,double totale1){
+        return  acquistoRepository.findByTotaleBetween(totale,totale1);
+    }
 }

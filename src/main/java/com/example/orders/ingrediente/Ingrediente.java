@@ -16,7 +16,7 @@ public class Ingrediente {
     private long id;
 private String nome;
 private double prezzo;
-@ManyToMany(mappedBy = "ingredienti")
+@ManyToMany(mappedBy = "ingredientes")
     @JsonIgnore
     private List<Prodotto> prodottos;
 

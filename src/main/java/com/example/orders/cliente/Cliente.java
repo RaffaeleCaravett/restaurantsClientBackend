@@ -40,7 +40,7 @@ inverseJoinColumns = @JoinColumn(name = "prodotto_id"))
 private List<Prodotto> prodotti;
 @OneToMany(mappedBy = "cliente")
 @JsonIgnore
-private Acquisto acquisto;
+private List<Acquisto> acquisto;
     public Cliente(long id, String email, String password,String nome, Role role, String immagine_profilo, String cognome, int eta,Citta citta) {
         super(id, email, password,nome, role,immagine_profilo);
         this.cognome = cognome;

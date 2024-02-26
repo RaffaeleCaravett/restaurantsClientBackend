@@ -28,7 +28,7 @@ public class EsercizioCommerciale extends User {
     private String indirizzo;
     @OneToOne(mappedBy = "esercizioCommerciale")
     private SchedaAnagrafica schedaAnagrafica;
-    @ManyToMany(mappedBy = "esercizioCommerciale",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "esercizioCommercialeList")
     @JsonIgnore
     private List<Cliente> clienteList;
     @ManyToOne
@@ -38,7 +38,7 @@ public class EsercizioCommerciale extends User {
     private List<Prodotto> prodottos;
     @OneToMany(mappedBy = "esercizioCommerciale")
     @JsonIgnore
-    private Acquisto acquisto;
+    private List<Acquisto> acquisto;
     public EsercizioCommerciale(long id, String email, String password, String nome, Role role, String immagine_profilo, TipoEsercizio tipoEsercizio, String indirizzo,SchedaAnagrafica schedaAnagrafica,Citta citta) {
         super(id, email, password, nome, role, immagine_profilo);
         this.tipoEsercizio = tipoEsercizio;

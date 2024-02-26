@@ -82,5 +82,18 @@ public class AcquistoController {
     public Acquisto putById(@PathVariable long id,@RequestBody AcquistoDTO acquistoDTO){
         return acquistoService.putById(id,acquistoDTO);
 }
+    @GetMapping("/totaleGreater/{totale}")
+    public List<Acquisto> getByTotaleGreater(@PathVariable double totale){
+        return acquistoService.findByTotaleGreaterThan(totale);
+    }
+    @GetMapping("/totaleLess/{totale}")
+    public List<Acquisto> getByTotaleLessThan(@PathVariable double totale){
+        return acquistoService.findByTotaleLessThan(totale);
+    }
+    @GetMapping("/totaleBetween/{totale}/{totale1}")
+    public List<Acquisto> getByTotaleBetween(@PathVariable double totale,@PathVariable double totale1){
+        return acquistoService.findByTotaleBetween(totale,totale1);
+    }
+
 }
 
