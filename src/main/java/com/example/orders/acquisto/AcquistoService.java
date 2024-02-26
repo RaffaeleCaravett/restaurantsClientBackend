@@ -85,7 +85,7 @@ public class AcquistoService {
         public List<Acquisto> getByAnno(int anno){
         return acquistoRepository.findByAnno(anno);
         }
-    public Page<Acquisto> getByAnno(int page, int size ,String orderBy){
+    public Page<Acquisto> getAll(int page, int size ,String orderBy){
         Pageable pageable = PageRequest.of(page,size, Sort.by(orderBy));
         return acquistoRepository.findAll(pageable);
     }
@@ -113,10 +113,10 @@ public class AcquistoService {
     public List<Acquisto> getByEsercizioAndAnnoAndMeseAndGiorno(long id,int anno,int mese,int giorno){
         return acquistoRepository.findByEsercizioCommerciale_IdAndAnnoAndMeseAndGiorno(id,anno,mese,giorno);
     }
-    public List<Acquisto> getByClienteAndAnnoAndMese(long id,int anno,int mese,int giorno){
+    public List<Acquisto> getByClienteAndAnnoAndMese(long id,int anno,int mese){
         return acquistoRepository.findByCliente_IdAndAnnoAndMese(id,anno,mese);
     }
-    public List<Acquisto> getByEsercizioAndAnnoAndMese(long id,int anno,int mese,int giorno){
+    public List<Acquisto> getByEsercizioAndAnnoAndMese(long id,int anno,int mese){
         return acquistoRepository.findByEsercizioCommerciale_IdAndAnnoAndMese(id,anno,mese);
     }
 }
