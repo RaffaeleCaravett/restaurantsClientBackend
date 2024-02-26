@@ -1,7 +1,10 @@
 package com.example.orders.cliente;
 
 import com.example.orders.citta.Citta;
+import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
 import com.example.orders.payloads.entities.ClienteDTO;
+import com.example.orders.payloads.entities.ProdottoDTO;
+import com.example.orders.prodotto.Prodotto;
 import lombok.Getter;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +63,12 @@ public List<Cliente> getByCittaId(@PathVariable long citta_id){
     public Cliente modifyImage(@PathVariable long id, MultipartFile file) throws BadRequestException {
     return clienteService.updateImage(id,file);
 }
-
+@GetMapping("addProdotto/{id}/{prodotto_id}")
+    public Prodotto addToProdotti(@PathVariable long id, @PathVariable long prodotto_id) throws BadRequestException {
+    return clienteService.addToProdotti(id,prodotto_id);
+}
+    @GetMapping("addEsercizio/{id}/{esercizio_id}")
+    public EsercizioCommerciale addToEsercizi(@PathVariable long id, @PathVariable long esercizio_id) throws BadRequestException {
+        return clienteService.addToBusiness(id,esercizio_id);
+    }
 }

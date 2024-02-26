@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Service
+@RestController
+@RequestMapping("/ingrediente")
 public class IngredienteController {
     @Autowired
     IngredienteService ingredienteService;
