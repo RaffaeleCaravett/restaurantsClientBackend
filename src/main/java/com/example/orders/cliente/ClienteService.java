@@ -3,11 +3,14 @@ package com.example.orders.cliente;
 import com.cloudinary.Cloudinary;
 import com.example.orders.citta.CittaRepository;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
+import com.example.orders.esercizioCommerciale.EsercizioCommercialeService;
 import com.example.orders.esercizioCommerciale.EsericizioCommercialeRepository;
 import com.example.orders.payloads.entities.ClienteDTO;
 import com.example.orders.prodotto.Prodotto;
 import com.example.orders.prodotto.ProdottoRepository;
+import com.example.orders.prodotto.ProdottoService;
 import com.example.orders.user.User;
+import jakarta.transaction.Transactional;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,10 +34,18 @@ public class ClienteService {
     EsericizioCommercialeRepository esericizioCommercialeRepository;
     @Autowired
     ProdottoRepository prodottoRepository;
+    @Autowired
+    ProdottoService prodottoService;
+    @Autowired
+    EsercizioCommercialeService esercizioCommercialeService;
 @Autowired
     CittaRepository cittaRepository;
+
+@Transactional
     public boolean deleteById(long id){
         try{
+            esercizioCommercialeService.deleteCliente(clienteRepository.findById(id).get());
+            prodottoService.deleteCliente(clienteRepository.findById(id).get());
             clienteRepository.deleteById(id);
             return true;
         }catch (Exception e){

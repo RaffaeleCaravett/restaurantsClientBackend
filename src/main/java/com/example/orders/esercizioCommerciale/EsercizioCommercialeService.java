@@ -4,8 +4,18 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.orders.citta.CittaRepository;
 import com.example.orders.cliente.Cliente;
+import com.example.orders.cliente.ClienteRepository;
 import com.example.orders.enums.TipoEsercizio;
+import com.example.orders.ingrediente.Ingrediente;
 import com.example.orders.payloads.entities.EsercizioCommercialeDTO;
+import com.example.orders.prodotto.Prodotto;
+import com.example.orders.prodotto.ProdottoRepository;
+import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
+import com.example.orders.schedaAnagrafica.SchedaAnagraficaRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +36,12 @@ public class EsercizioCommercialeService {
     private Cloudinary cloudinary;
     @Autowired
     CittaRepository cittaRepository;
+    @Autowired
+    SchedaAnagraficaRepository schedaAnagraficaRepository;
+    @Autowired
+    ProdottoRepository prodottoRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 public EsercizioCommerciale putById(long id, EsercizioCommercialeDTO esercizioCommercialeDTO) throws BadRequestException {
     if(esericizioCommercialeRepository.findById(id).isPresent()){
         EsercizioCommerciale esercizioCommerciale= esericizioCommercialeRepository.findById(id).get();
@@ -44,8 +60,27 @@ esercizioCommerciale.setTipoEsercizio(TipoEsercizio.valueOf(esercizioCommerciale
         throw new BadRequestException("Esercizio con id " + id + " non presente in db.");
     }
 }
+@Transactional
+    public void deleteCliente(Cliente cliente) {
+
+        Query deleteIngredienteQuery = entityManager.createNativeQuery("DELETE FROM cliente_esercizio WHERE user_id = ?");
+        deleteIngredienteQuery.setParameter(1, cliente.getId());
+        deleteIngredienteQuery.executeUpdate();
+    }
+    @Transactional
 public boolean deleteById(long id){
     try {
+        EsercizioCommerciale esercizioCommerciale = esericizioCommercialeRepository.findById(id).get();
+        schedaAnagraficaRepository.deleteById(esercizioCommerciale.getSchedaAnagrafica().getId());
+       for(Prodotto p : esercizioCommerciale.getProdottos()){
+           prodottoRepository.deleteById(p.getId());
+       }
+    for(Cliente cliente:esercizioCommerciale.getClienteList()){
+        deleteCliente(cliente);
+    }
+       for (Prodotto p: esercizioCommerciale.getProdottos()){
+           prodottoRepository.deleteById(p.getId());
+       }
         esericizioCommercialeRepository.deleteById(id);
         return true;
     }catch (Exception e){
