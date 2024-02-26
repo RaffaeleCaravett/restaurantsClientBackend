@@ -18,11 +18,11 @@ public SchedaAnagrafica putById(long id, SchedaAnagraficaDTO schedaAnagraficaDTO
     if(schedaAnagraficaRepository.findById(id).isPresent()){
         SchedaAnagrafica  schedaAnagrafica = schedaAnagraficaRepository.findById(id).get();
 
-        if(!schedaAnagrafica.getPIva().equals(schedaAnagraficaDTO.pIva())){
-            if(schedaAnagraficaRepository.findByPIva(schedaAnagraficaDTO.pIva()).isPresent()){
+        if(!schedaAnagrafica.getPartitaIva().equals(schedaAnagraficaDTO.pIva())){
+            if(schedaAnagraficaRepository.findByPartitaIva(schedaAnagraficaDTO.pIva()).isPresent()){
                 throw new BadRequestException("Scheda con pIva " + schedaAnagraficaDTO.pIva() + " già presente.");
             }
-            schedaAnagrafica.setPIva(schedaAnagraficaDTO.pIva());
+            schedaAnagrafica.setPartitaIva(schedaAnagraficaDTO.pIva());
         }
        schedaAnagrafica.setRappresentante(schedaAnagraficaDTO.rappresentante());
         schedaAnagrafica.setCapitaleSociale(schedaAnagraficaDTO.capitaleSociale());
@@ -46,7 +46,7 @@ public SchedaAnagrafica getById(long id){
 }
 
 public List<SchedaAnagrafica> findByPIvaContaining(String pIva){
-    return schedaAnagraficaRepository.findByPIvaContaining(pIva);
+    return schedaAnagraficaRepository.findByPartitaIvaContaining(pIva);
 }
 
 public List<SchedaAnagrafica> getAll(){

@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface SchedaAnagraficaRepository extends JpaRepository<SchedaAnagrafica,Long> {
-    Optional<SchedaAnagrafica> findByPIva(String PIva);
-    List<SchedaAnagrafica> findByPIvaContaining(String PIva);
+    Optional<SchedaAnagrafica> findByPartitaIva(String PartitaIva);
+    List<SchedaAnagrafica> findByPartitaIvaContaining(String PartitaIva);
 }

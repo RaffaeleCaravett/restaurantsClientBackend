@@ -93,7 +93,7 @@ esercizioCommerciale.setPassword(bcrypt.encode(esercizioCommercialeDTO.password(
     public SchedaAnagrafica saveAnagrafica(SchedaAnagraficaDTO schedaAnagraficaDTO) throws BadRequestException {
         SchedaAnagrafica schedaAnagrafica = new SchedaAnagrafica();
         schedaAnagrafica.setCapitaleSociale(schedaAnagraficaDTO.capitaleSociale());
-        schedaAnagrafica.setPIva(schedaAnagraficaDTO.pIva());
+        schedaAnagrafica.setPartitaIva(schedaAnagraficaDTO.pIva());
         schedaAnagrafica.setRappresentante(schedaAnagraficaDTO.rappresentante());
         EsercizioCommerciale esercizioCommerciale = new EsercizioCommerciale();
         if(esericizioCommercialeRepository.findById(schedaAnagraficaDTO.esercizio_id()).isPresent()) {

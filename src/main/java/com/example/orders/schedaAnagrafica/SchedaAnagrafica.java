@@ -12,7 +12,7 @@ public class SchedaAnagrafica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String capitaleSociale;
-    private String pIva;
+    private String partitaIva;
     private String rappresentante;
     @OneToOne
     @JoinColumn(name = "esercizio_id")
