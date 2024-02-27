@@ -15,16 +15,18 @@ import java.util.List;
 @RestControllerAdvice
 public class ExceptionsHandler {
 
-@ExceptionHandler(BadRequestException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorsWithListDTO handleBadRequest(BadRequestException e){
-    if(e.getErrorList()!= null){
-        List<String> errorsList = e.getErrorList().stream().map(objectError -> objectError.getDefaultMessage()).toList();
-        return  new ErrorsWithListDTO(e.getMessage(), new Date(),errorsList);
-    }else {
-        return  new ErrorsWithListDTO(e.getMessage(),new Date(),new ArrayList<>());
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST) // 400
+    public ErrorsWithListDTO handleBadRequest(BadRequestException e) {
+        if (e.getErrorList() != null) {
+            List<String> errorsList = e.getErrorList().stream().map(objectError -> objectError.getDefaultMessage()).toList();
+            return new ErrorsWithListDTO(e.getMessage(), new Date(), errorsList);
+        } else {
+            return new ErrorsWithListDTO(e.getMessage(), new Date(), new ArrayList<>());
+        }
+
     }
-}
+
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED) // 401
     public ErrorsDTO handleUnauthorized(UnauthorizedException e) {

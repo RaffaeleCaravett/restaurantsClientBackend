@@ -4,6 +4,7 @@ import com.example.orders.cliente.Cliente;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
 import com.example.orders.exceptions.BadRequestException;
 import com.example.orders.payloads.entities.*;
+import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
 import com.example.orders.security.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,6 +78,19 @@ public class AuthController {
         } else {
             try {
                 return authService.save(clienteDTO,multipartFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    @PostMapping("/schedaAnagrafica")
+    @ResponseStatus(HttpStatus.CREATED) // <-- 201
+    public SchedaAnagrafica saveScheda(@RequestBody @Validated SchedaAnagraficaDTO schedaAnagraficaDTO, BindingResult validation){
+        if(validation.hasErrors()){
+            throw new BadRequestException(validation.getAllErrors());
+        } else {
+            try {
+                return authService.saveAnagrafica(schedaAnagraficaDTO);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

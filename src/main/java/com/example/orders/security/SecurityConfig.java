@@ -1,6 +1,6 @@
 package com.example.orders.security;
 
-import com.example.orders.exceptions.ExceptionHandlerFilter;
+import com.example.orders.exceptions.ExceptionsHandlerFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -30,39 +30,46 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
     @Autowired
     JWTAuthFilter jwtAuthFilter;
+
     @Autowired
-    ExceptionHandlerFilter exceptionHandlerFilter;
+    ExceptionsHandlerFilter exceptionsHandlerFilter;
 
     @Value("#{'${cors.allowed-origins}'.split(',')}")
     private List<String> allowedOrigins;
 
-@Bean
-    SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
-    http.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-    http.csrf(AbstractHttpConfigurer::disable);
-    http.formLogin(AbstractHttpConfigurer::disable);
-    http.cors(withDefaults());
 
-    http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-    http.addFilterBefore(exceptionHandlerFilter, JWTAuthFilter.class);
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // Disabilitiamo alcuni comportamenti di default
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
+        http.formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable());
+        http.cors(withDefaults());
 
-    return http.build();
-}
+        // Aggiugo filtri custom
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionsHandlerFilter, JWTAuthFilter.class);
 
-@Bean
+
+
+        // Aggiungo/rimuovo protezione sui singoli endpoint in maniera che venga/non venga richiesta l'autenticazione per accedervi
+        return http.build();
+    }
+    @Bean
     PasswordEncoder getEncoder(){
-    return new BCryptPasswordEncoder(11);
-}
+        return new BCryptPasswordEncoder(11);
+        // 11 è il numero di ROUNDS, ovvero quante volte viene eseguito l'algoritmo. In parole povere ci serve
+        // per settare la velocità di esecuzione di bcrypt (+ è alto il numero, + lento l'algoritmo, + sicure sarnno le pw)
+    }
 
-@Bean
+    @Bean
     CorsConfigurationSource corsConfigurationSource(){
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(allowedOrigins);
-    configuration.setAllowedMethods(List.of("*"));
-    configuration.setAllowedHeaders(List.of("*"));
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-}
-
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(allowedOrigins);
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }

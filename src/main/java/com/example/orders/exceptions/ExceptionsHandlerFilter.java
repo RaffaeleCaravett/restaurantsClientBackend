@@ -13,7 +13,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import java.io.IOException;
 
 @Component
-public class ExceptionHandlerFilter extends OncePerRequestFilter {
+public class ExceptionsHandlerFilter extends OncePerRequestFilter {
     @Autowired
     @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver resolver;

@@ -13,7 +13,6 @@ import com.example.orders.exceptions.UnauthorizedException;
 import com.example.orders.payloads.entities.*;
 import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
 import com.example.orders.schedaAnagrafica.SchedaAnagraficaRepository;
-import com.example.orders.schedaAnagrafica.SchedaAnagraficaService;
 import com.example.orders.security.JWTTools;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.prefs.BackingStoreException;
 
 @Service
 public class AuthService {
@@ -44,9 +42,9 @@ public class AuthService {
     @Autowired
     private PasswordEncoder bcrypt;
 
-    public Cliente save(ClienteDTO clienteDTO, MultipartFile file) throws BadRequestException {
+    public Cliente save(ClienteDTO clienteDTO, MultipartFile file) throws IOException  {
         if(clienteRepository.findByEmail(clienteDTO.email()).isPresent()){
-            throw new BadRequestException("Utente con email " + clienteDTO.email() + " già presente.");
+            throw new com.example.orders.exceptions.BadRequestException("Utente con email " + clienteDTO.email() + " già presente.");
         }
         Cliente cliente = new Cliente();
         cliente.setNome(clienteDTO.nome());
@@ -73,9 +71,9 @@ public class AuthService {
     }
 
 
-    public EsercizioCommerciale saveEsercizio(EsercizioCommercialeDTO esercizioCommercialeDTO, MultipartFile file) throws BadRequestException {
+    public EsercizioCommerciale saveEsercizio(EsercizioCommercialeDTO esercizioCommercialeDTO, MultipartFile file) throws IOException  {
         if(esericizioCommercialeRepository.findByEmail(esercizioCommercialeDTO.email()).isPresent()){
-            throw new BadRequestException("Esercizio commerciale con email " + esercizioCommercialeDTO.email() + " già presente.");
+            throw new com.example.orders.exceptions.BadRequestException("Esercizio commerciale con email " + esercizioCommercialeDTO.email() + " già presente.");
         }
      EsercizioCommerciale esercizioCommerciale = new EsercizioCommerciale();
         esercizioCommerciale.setNome(esercizioCommercialeDTO.nome());
@@ -98,7 +96,7 @@ esercizioCommerciale.setPassword(bcrypt.encode(esercizioCommercialeDTO.password(
         return esericizioCommercialeRepository.save(esercizioCommerciale);
     }
 
-    public SchedaAnagrafica saveAnagrafica(SchedaAnagraficaDTO schedaAnagraficaDTO) throws BadRequestException {
+    public SchedaAnagrafica saveAnagrafica(SchedaAnagraficaDTO schedaAnagraficaDTO) throws IOException {
         SchedaAnagrafica schedaAnagrafica = new SchedaAnagrafica();
         schedaAnagrafica.setCapitaleSociale(schedaAnagraficaDTO.capitaleSociale());
         schedaAnagrafica.setPartitaIva(schedaAnagraficaDTO.pIva());
@@ -107,7 +105,7 @@ esercizioCommerciale.setPassword(bcrypt.encode(esercizioCommercialeDTO.password(
         if(esericizioCommercialeRepository.findById(schedaAnagraficaDTO.esercizio_id()).isPresent()) {
    esercizioCommerciale = esericizioCommercialeRepository.findById(schedaAnagraficaDTO.esercizio_id()).get();
 }    else {
-    throw new BadRequestException("esercizio con id " + schedaAnagraficaDTO.esercizio_id() + " non presente");
+    throw new com.example.orders.exceptions.BadRequestException("esercizio con id " + schedaAnagraficaDTO.esercizio_id() + " non presente");
 }
     schedaAnagrafica.setEsercizioCommerciale(esercizioCommerciale);
         return schedaAnagraficaRepository.save(schedaAnagrafica);
