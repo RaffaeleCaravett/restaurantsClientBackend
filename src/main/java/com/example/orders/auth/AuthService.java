@@ -9,12 +9,12 @@ import com.example.orders.enums.Role;
 import com.example.orders.enums.TipoEsercizio;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
 import com.example.orders.esercizioCommerciale.EsericizioCommercialeRepository;
+import com.example.orders.exceptions.BadRequestException;
 import com.example.orders.exceptions.UnauthorizedException;
 import com.example.orders.payloads.entities.*;
 import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
 import com.example.orders.schedaAnagrafica.SchedaAnagraficaRepository;
 import com.example.orders.security.JWTTools;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -123,6 +123,9 @@ esercizioCommerciale.setPassword(bcrypt.encode(esercizioCommercialeDTO.password(
         }
     }
     public Token authenticateEsercizio(UserLoginDTO body) throws Exception {
+        if(!esericizioCommercialeRepository.findByEmail(body.email()).isPresent()){
+            throw new BadRequestException("Utente con email " + body.email() + " non presente in database");
+        }
         // 1. Verifichiamo che l'email dell'utente sia nel db
         EsercizioCommerciale user = esericizioCommercialeRepository.findByEmail(body.email()).get();
         // 2. In caso affermativo, verifichiamo se la password corrisponde a quella trovata nel db
