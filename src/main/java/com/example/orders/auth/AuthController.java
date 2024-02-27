@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -55,12 +56,13 @@ public class AuthController {
     }
     @PostMapping("/esercizio/register")
     @ResponseStatus(HttpStatus.CREATED) // <-- 201
-    public EsercizioCommerciale saveEsercizio(@RequestBody @Validated EsercizioCommercialeDTO body, BindingResult validation){
+    public EsercizioCommerciale saveEsercizio(@RequestPart("esercizioDTO") @Validated EsercizioCommercialeDTO esercizioCommercialeDTO, @RequestPart("file") MultipartFile multipartFile
+            , BindingResult validation){
         if(validation.hasErrors()){
             throw new BadRequestException(validation.getAllErrors());
         } else {
             try {
-                return authService.saveEsercizio(body);
+                return authService.saveEsercizio(esercizioCommercialeDTO,multipartFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -68,16 +70,17 @@ public class AuthController {
     }
     @PostMapping("/cliente/register")
     @ResponseStatus(HttpStatus.CREATED) // <-- 201
-    public Cliente saveEsercizio(@RequestBody @Validated ClienteDTO body, BindingResult validation){
+    public Cliente saveCliente(@RequestPart("clienteDTO") @Validated ClienteDTO clienteDTO, @RequestPart("file") MultipartFile multipartFile
+            , BindingResult validation){
         if(validation.hasErrors()){
             throw new BadRequestException(validation.getAllErrors());
         } else {
             try {
-                return authService.save(body);
+                return authService.save(clienteDTO,multipartFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
-    
+
 }

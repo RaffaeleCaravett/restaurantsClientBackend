@@ -57,14 +57,19 @@ public class AuthService {
         cliente.setPassword(bcrypt.encode(clienteDTO.password()));
         cliente.setProdotti(new ArrayList<>());
         cliente.setEsercizioCommercialeList(new ArrayList<>());
-        try {
-            Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-            String imageUrl = (String) uploadResult.get("url");
-            cliente.setImmagine_profilo(imageUrl);
-        } catch (IOException e) {
-            throw new RuntimeException("Impossibile caricare l'immagine", e);
+        if(file!=null){
+            try {
+                Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+                String imageUrl = (String) uploadResult.get("url");
+                cliente.setImmagine_profilo(imageUrl);
+            } catch (IOException e) {
+                throw new RuntimeException("Impossibile caricare l'immagine", e);
+            }
+        }else{
+            cliente.setImmagine_profilo("assets/forms/empty-avatar.webp");
         }
-        return cliente;
+
+        return clienteRepository.save(cliente);
     }
 
 
@@ -80,14 +85,17 @@ esercizioCommerciale.setIndirizzo(esercizioCommercialeDTO.indirizzo());
 esercizioCommerciale.setRole(Role.Attivita);
 esercizioCommerciale.setCitta(cittaRepository.findById(esercizioCommercialeDTO.citta_id()).get());
 esercizioCommerciale.setPassword(bcrypt.encode(esercizioCommercialeDTO.password()));
+       if(file!=null){
         try {
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             String imageUrl = (String) uploadResult.get("url");
             esercizioCommerciale.setImmagine_profilo(imageUrl);
         } catch (IOException e) {
             throw new RuntimeException("Impossibile caricare l'immagine", e);
-        }
-        return esercizioCommerciale;
+        }}else{
+        esercizioCommerciale.setImmagine_profilo("assets/forms/empty-avatar.webp");
+    }
+        return esericizioCommercialeRepository.save(esercizioCommerciale);
     }
 
     public SchedaAnagrafica saveAnagrafica(SchedaAnagraficaDTO schedaAnagraficaDTO) throws BadRequestException {
