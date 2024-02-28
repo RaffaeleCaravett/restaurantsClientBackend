@@ -1,6 +1,7 @@
 package com.example.orders.schedaAnagrafica;
 
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class SchedaAnagrafica {
     private String partitaIva;
     private String rappresentante;
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "esercizio_id")
     private EsercizioCommerciale esercizioCommerciale;
 }

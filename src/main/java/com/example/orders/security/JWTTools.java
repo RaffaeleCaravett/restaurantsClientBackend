@@ -2,6 +2,7 @@ package com.example.orders.security;
 
 import com.example.orders.cliente.Cliente;
 import com.example.orders.cliente.ClienteRepository;
+import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
 import com.example.orders.esercizioCommerciale.EsericizioCommercialeRepository;
 import com.example.orders.exceptions.UnauthorizedException;
 import com.example.orders.payloads.entities.Token;
@@ -59,7 +60,7 @@ public User verifyClienteToken(String token){
         }
 }
 
-public User verifyEsercizioToken(String token){
+public EsercizioCommerciale verifyEsercizioToken(String token){
     try {
         Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
                 .build().parse(token).getBody();
@@ -69,7 +70,8 @@ public User verifyEsercizioToken(String token){
                 .parseClaimsJws(token)
                 .getBody();
         String userId = claims.getSubject();
-        return esericizioCommercialeRepository.findById(Long.valueOf(userId)).get();
+        System.out.println(esericizioCommercialeRepository.findById(Long.parseLong(userId)).get().toString());
+        return esericizioCommercialeRepository.findById(Long.parseLong(userId)).get();
     }catch (Exception e){
         throw new UnauthorizedException("Il token non è valido! Per favore effettua nuovamente il login!");
     }

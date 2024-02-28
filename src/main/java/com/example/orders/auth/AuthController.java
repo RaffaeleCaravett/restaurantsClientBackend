@@ -42,7 +42,7 @@ public class AuthController {
     @GetMapping("/esercizio/{token}")
     @ResponseStatus(HttpStatus.OK)
     public EsercizioCommerciale verifyEsercizioToken(@PathVariable String token){
-        return (EsercizioCommerciale) jwtTools.verifyEsercizioToken(token);
+        return jwtTools.verifyEsercizioToken(token);
     }
     @GetMapping("/refreshClienteToken/{refreshToken}")
     @ResponseStatus(HttpStatus.OK)
