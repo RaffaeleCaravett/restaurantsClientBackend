@@ -71,4 +71,9 @@ public List<Cliente> getByCittaId(@PathVariable long citta_id){
     public EsercizioCommerciale addToEsercizi(@PathVariable long id, @PathVariable long esercizio_id) throws BadRequestException {
         return clienteService.addToBusiness(id,esercizio_id);
     }
+
+    @GetMapping("byEsercizio/{id}")
+    public Page<Cliente> getByEsercizio(@PathVariable long id, @RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String orderBy) throws BadRequestException {
+        return clienteService.getByEsercizio(id,page,size,orderBy);
+    }
 }

@@ -14,7 +14,9 @@ import jakarta.transaction.Transactional;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.utils.ObjectUtils;
@@ -120,5 +122,10 @@ return esericizioCommercialeRepository.findById(esercizio_id).get();
         }else {
             throw new BadRequestException("Cliente o prodotto non presenti a db");
         }
+    }
+
+    public Page<Cliente> getByEsercizio(long id ,int page, int size ,String orderBy){
+    Pageable pageable = PageRequest.of(page,size, Sort.by(orderBy));
+    return clienteRepository.findByEsercizioCommercialeList_Id(id,pageable);
     }
 }
