@@ -1,6 +1,7 @@
 package com.example.orders.esercizioCommerciale;
 
 import com.example.orders.cliente.Cliente;
+import com.example.orders.cliente.ClienteService;
 import com.example.orders.payloads.entities.EsercizioCommercialeDTO;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class EsercizioCommercialeController {
 
 @Autowired
 EsercizioCommercialeService esercizioCommercialeService;
+@Autowired
+    ClienteService clienteService;
     @GetMapping("/me")
     public EsercizioCommerciale getById(@AuthenticationPrincipal EsercizioCommerciale currentUser) throws BadRequestException {
         return esercizioCommercialeService.getById(currentUser.getId());
@@ -57,5 +60,9 @@ EsercizioCommercialeService esercizioCommercialeService;
     @GetMapping("/clienti/{id}")
     public List<Cliente> getAll(@PathVariable long id) throws BadRequestException {
         return esercizioCommercialeService.getClientiByEsercizioId(id);
+    }
+    @GetMapping("byEsercizio/{id}")
+    public Page<Cliente> getByEsercizio(@PathVariable long id, @RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String orderBy) throws BadRequestException {
+        return clienteService.getByEsercizio(id,page,size,orderBy);
     }
 }
