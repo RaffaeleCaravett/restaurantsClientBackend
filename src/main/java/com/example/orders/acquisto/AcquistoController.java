@@ -52,8 +52,9 @@ public class AcquistoController {
         return acquistoService.getByCliente(id);
     }
     @GetMapping("/esercizio/{id}")
-    public List<Acquisto> getByEsercizio(@PathVariable long id){
-        return acquistoService.getByEsercizio(id);
+    public Page<Acquisto> getByEsercizio(@PathVariable long id,@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size,
+                                         @RequestParam(defaultValue = "id") String orderBy){
+        return acquistoService.getByEsercizio(id,page,size,orderBy);
     }
     @GetMapping("/clienteAnnoMese/{id}/{anno}/{mese}")
     public List<Acquisto> getByClienteAndAnnoAndMese(@PathVariable long id,@PathVariable int anno,@PathVariable int mese){

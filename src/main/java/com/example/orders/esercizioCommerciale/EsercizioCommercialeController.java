@@ -24,6 +24,8 @@ public class EsercizioCommercialeController {
 EsercizioCommercialeService esercizioCommercialeService;
 @Autowired
     ClienteService clienteService;
+@Autowired
+EsericizioCommercialeRepository esericizioCommercialeRepository;
     @GetMapping("/me")
     public EsercizioCommerciale getById(@AuthenticationPrincipal EsercizioCommerciale currentUser) throws BadRequestException {
         return esercizioCommercialeService.getById(currentUser.getId());
@@ -53,9 +55,13 @@ EsercizioCommercialeService esercizioCommercialeService;
     public EsercizioCommerciale updateImageById(@PathVariable long id, MultipartFile file) throws BadRequestException {
         return esercizioCommercialeService.updateImage(id,file);
     }
-    @GetMapping("/esercizio/{id}")
-    public List<EsercizioCommerciale> getByCittaId(@PathVariable long citta_id){
-        return esercizioCommercialeService.findByCittaId(citta_id);
+    @GetMapping("/esercizio/{citta_id}/{nome}")
+    public List<EsercizioCommerciale> getByCittaIdAndNomeContaining(@PathVariable long citta_id,@PathVariable String nome){
+        return esercizioCommercialeService.findByCittaIdAndNomeContaining(citta_id,nome);
+    }
+    @GetMapping("/esercizioNome/{nome}")
+    public List<EsercizioCommerciale> getByNomeContaining(@PathVariable String nome){
+        return esericizioCommercialeRepository.findByNomeContaining(nome);
     }
     @GetMapping("/clienti/{id}")
     public List<Cliente> getAll(@PathVariable long id) throws BadRequestException {

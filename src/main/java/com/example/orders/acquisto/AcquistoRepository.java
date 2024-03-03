@@ -1,5 +1,7 @@
 package com.example.orders.acquisto;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +22,7 @@ public interface AcquistoRepository extends JpaRepository<Acquisto,Long> {
 
     List<Acquisto> findByCliente_IdAndAnnoAndMese(long cliente_id,int anno,int mese);
     List<Acquisto> findByCliente_IdAndAnnoAndMeseAndGiorno(long cliente_id,int anno,int mese, int giorno);
-    List<Acquisto> findByEsercizioCommerciale_Id(long esercizioCommerciale_id);
+   Page<Acquisto> findByEsercizioCommerciale_Id(long esercizioCommerciale_id, Pageable pageable);
     List<Acquisto> findByEsercizioCommerciale_IdAndMese(long esercizioCommerciale_id,int mese);
     List<Acquisto> findByEsercizioCommerciale_IdAndAnno(long esercizioCommerciale_id,int anno);
     List<Acquisto> findByEsercizioCommerciale_IdAndAnnoAndMese(long esercizioCommerciale_id,int anno,int mese);

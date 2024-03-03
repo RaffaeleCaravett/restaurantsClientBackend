@@ -127,7 +127,7 @@ public Page<EsercizioCommerciale> getAllPaginated(Pageable pageable){
             throw new BadRequestException("Utente con id " + id + " non trovato");
         }
     }
-    public List<EsercizioCommerciale> findByCittaId(long citta_id){
-    return esericizioCommercialeRepository.findByCitta_Id(citta_id);
+    public List<EsercizioCommerciale> findByCittaIdAndNomeContaining(long citta_id,String nome){
+    return esericizioCommercialeRepository.findByCitta_IdAndNomeContaining(citta_id,nome);
     }
 }

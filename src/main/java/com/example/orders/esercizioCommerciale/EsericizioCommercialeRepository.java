@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface EsericizioCommercialeRepository extends JpaRepository<EsercizioCommerciale,Long> {
     Optional<EsercizioCommerciale> findByEmail(String email);
 List<EsercizioCommerciale> findByCitta_Id(Long id);
-
+    List<EsercizioCommerciale> findByCitta_IdAndNomeContaining(Long id,String nome);
+    List<EsercizioCommerciale> findByNomeContaining(String nome);
 }

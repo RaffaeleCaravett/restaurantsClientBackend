@@ -101,8 +101,9 @@ public class AcquistoService {
     public List<Acquisto> getByEsercizioAndAnno(long id,int anno){
         return acquistoRepository.findByEsercizioCommerciale_IdAndAnno(id,anno);
     }
-    public List<Acquisto> getByEsercizio(long id){
-        return acquistoRepository.findByEsercizioCommerciale_Id(id);
+    public Page<Acquisto> getByEsercizio(long id,int page,int size,String orderBy){
+        Pageable pageable = PageRequest.of(page,size,Sort.by(orderBy));
+        return acquistoRepository.findByEsercizioCommerciale_Id(id,pageable);
     }
     public List<Acquisto> getByCliente(long id){
         return acquistoRepository.findByCliente_Id(id);
