@@ -119,7 +119,7 @@ public Page<EsercizioCommerciale> getAllPaginated(Pageable pageable){
                 Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
                 String imageUrl = (String) uploadResult.get("url");
                 cliente.setImmagine_profilo(imageUrl);
-                return cliente;
+                return esericizioCommercialeRepository.save(cliente);
             } catch (IOException e) {
                 throw new RuntimeException("Impossibile caricare l'immagine", e);
             }

@@ -53,6 +53,7 @@ EsericizioCommercialeRepository esericizioCommercialeRepository;
     }
     @PutMapping("/image/{id}")
     public EsercizioCommerciale updateImageById(@PathVariable long id, MultipartFile file) throws BadRequestException {
+        System.out.println(file);
         return esercizioCommercialeService.updateImage(id,file);
     }
     @GetMapping("/esercizio/{citta_id}/{nome}")

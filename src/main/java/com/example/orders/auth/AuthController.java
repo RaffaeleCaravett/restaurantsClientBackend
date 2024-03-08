@@ -1,11 +1,14 @@
 package com.example.orders.auth;
 
+import com.example.orders.citta.CittaRepository;
 import com.example.orders.cliente.Cliente;
+import com.example.orders.enums.Role;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
 import com.example.orders.exceptions.BadRequestException;
 import com.example.orders.payloads.entities.*;
 import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
 import com.example.orders.security.JWTTools;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -23,6 +26,9 @@ public class AuthController {
     AuthService authService;
 @Autowired
     JWTTools jwtTools;
+
+@Autowired
+    CittaRepository cittaRepository;
     @PostMapping("/clienteLogin")
     public UserLoginSuccessDTO clienteLogin (@RequestBody UserLoginDTO userLoginDTO)throws Exception {
 
@@ -97,4 +103,19 @@ public class AuthController {
         }
     }
 
+@GetMapping("/faker")
+    public Cliente getFakerClient(){
+        Cliente cliente = new Cliente();
+    Faker faker = new Faker();
+        cliente.setNome(faker.name().firstName());
+        cliente.setCognome(faker.name().lastName());
+        cliente.setEta(faker.number().numberBetween(18,150));
+        cliente.setImmagine_profilo("");
+        cliente.setRole(Role.Cliente);
+        cliente.setEmail(faker.internet().emailAddress());
+        cliente.setPassword(faker.internet().password());
+        cliente.setCitta(cittaRepository.findRandomCitta().get());
+
+        return cliente;
+    }
 }
