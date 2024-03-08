@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface CittaRepository extends JpaRepository<Citta,Long> {
-    @Query(value = "SELECT * FROM citta ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM città ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
     Optional<Citta> findRandomCitta();
 }
