@@ -55,6 +55,7 @@ public class AuthService {
         cliente.setPassword(bcrypt.encode(clienteDTO.password()));
         cliente.setProdotti(new ArrayList<>());
         cliente.setEsercizioCommercialeList(new ArrayList<>());
+        cliente.setRole(Role.Cliente);
         if(file!=null){
             try {
                 Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
@@ -110,9 +111,9 @@ esercizioCommerciale.setPassword(bcrypt.encode(esercizioCommercialeDTO.password(
     schedaAnagrafica.setEsercizioCommerciale(esercizioCommerciale);
         return schedaAnagraficaRepository.save(schedaAnagrafica);
     }
-    public Token authenticateCliente(UserLoginDTO body) throws Exception {
+    public Token authenticateCliente(UserLoginDTO body)  {
         // 1. Verifichiamo che l'email dell'utente sia nel db
-       Cliente user = clienteRepository.findByEmail(body.email()).get();
+       Cliente user = clienteRepository.findByEmail(body.email()).orElseThrow(() -> new BadRequestException("Email non presente in db"));
         // 2. In caso affermativo, verifichiamo se la password corrisponde a quella trovata nel db
         if(bcrypt.matches(body.password(), user.getPassword()))  {
             // 3. Se le credenziali sono OK --> Genero un JWT e lo restituisco

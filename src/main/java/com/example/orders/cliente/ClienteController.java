@@ -2,6 +2,7 @@ package com.example.orders.cliente;
 
 import com.example.orders.citta.Citta;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
+import com.example.orders.esercizioCommerciale.EsercizioCommercialeService;
 import com.example.orders.payloads.entities.ClienteDTO;
 import com.example.orders.payloads.entities.ProdottoDTO;
 import com.example.orders.prodotto.Prodotto;
@@ -25,7 +26,8 @@ public class ClienteController {
 
 @Autowired
     ClienteService clienteService;
-
+@Autowired
+    EsercizioCommercialeService esercizioCommercialeService;
 @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('Cliente','Attivita')")
     public Cliente getById(@PathVariable long id) throws BadRequestException {
@@ -71,6 +73,9 @@ public List<Cliente> getByCittaId(@PathVariable long citta_id){
     public EsercizioCommerciale addToEsercizi(@PathVariable long id, @PathVariable long esercizio_id) throws BadRequestException {
         return clienteService.addToBusiness(id,esercizio_id);
     }
-
+    @GetMapping("/esercizio/{citta_id}/{nome}")
+    public List<EsercizioCommerciale> getByCittaIdAndNomeContaining(@PathVariable long citta_id,@PathVariable String nome){
+        return esercizioCommercialeService.findByCittaIdAndNomeContaining(citta_id,nome);
+    }
 
 }
