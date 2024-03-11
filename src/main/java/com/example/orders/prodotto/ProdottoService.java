@@ -37,11 +37,8 @@ public class ProdottoService {
             ingredientes.add(ingredienteRepository.findById(l).get());
         }
         prodotto.setIngredientes(ingredientes);
-       double prezzo = 0;
-        for(Ingrediente i : prodotto.getIngredientes()){
-           prezzo+=i.getPrezzo();
-       }
-prodotto.setPrezzo(prezzo);
+        prodotto.setPrezzo(prodottoDTO.prezzo());
+
         return prodottoRepository.save(prodotto);
     };
 
@@ -63,11 +60,8 @@ prodotto.setPrezzo(prezzo);
             ingredientes.add(ingredienteRepository.findById(l).get());
         }
         prodotto.setIngredientes(ingredientes);
-        double prezzo = 0;
-        for(Ingrediente i : prodotto.getIngredientes()){
-            prezzo+=i.getPrezzo();
-        }
-        prodotto.setPrezzo(prezzo);
+
+        prodotto.setPrezzo(prodottoDTO.prezzo());
         return prodottoRepository.save(prodotto);
 
     }

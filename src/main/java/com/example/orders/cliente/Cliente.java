@@ -5,6 +5,7 @@ import com.example.orders.citta.Citta;
 import com.example.orders.enums.Role;
 import com.example.orders.esercizioCommerciale.EsercizioCommerciale;
 import com.example.orders.prodotto.Prodotto;
+import com.example.orders.recensione.Recensione;
 import com.example.orders.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -41,6 +42,8 @@ private List<Prodotto> prodotti;
 @OneToMany(mappedBy = "cliente")
 @JsonIgnore
 private List<Acquisto> acquisto;
+@OneToMany(mappedBy = "cliente")
+private List<Recensione> recensione;
     public Cliente(long id, String email, String password,String nome, Role role, String immagine_profilo, String cognome, int eta,Citta citta) {
         super(id, email, password,nome, role,immagine_profilo);
         this.cognome = cognome;

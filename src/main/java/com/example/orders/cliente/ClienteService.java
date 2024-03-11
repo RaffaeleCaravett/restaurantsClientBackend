@@ -9,6 +9,8 @@ import com.example.orders.payloads.entities.ClienteDTO;
 import com.example.orders.prodotto.Prodotto;
 import com.example.orders.prodotto.ProdottoRepository;
 import com.example.orders.prodotto.ProdottoService;
+import com.example.orders.recensione.Recensione;
+import com.example.orders.recensione.RecensioneRepository;
 import com.example.orders.user.User;
 import jakarta.transaction.Transactional;
 import org.apache.coyote.BadRequestException;
@@ -42,13 +44,17 @@ public class ClienteService {
     EsercizioCommercialeService esercizioCommercialeService;
 @Autowired
     CittaRepository cittaRepository;
-
+@Autowired
+    RecensioneRepository recensioneRepository;
 @Transactional
     public boolean deleteById(long id){
         try{
             esercizioCommercialeService.deleteCliente(clienteRepository.findById(id).get());
             prodottoService.deleteCliente(clienteRepository.findById(id).get());
             clienteRepository.deleteById(id);
+            for(Recensione r: clienteRepository.findById(id).get().getRecensione()){
+                recensioneRepository.deleteById(r.getId());
+            }
             return true;
         }catch (Exception e){
             return false;
@@ -128,4 +134,5 @@ return esericizioCommercialeRepository.findById(esercizio_id).get();
     Pageable pageable = PageRequest.of(page,size, Sort.by(orderBy));
     return clienteRepository.findByEsercizioCommercialeList_Id(id,pageable);
     }
+
 }

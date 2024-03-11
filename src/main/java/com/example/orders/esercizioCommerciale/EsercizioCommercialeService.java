@@ -10,6 +10,8 @@ import com.example.orders.ingrediente.Ingrediente;
 import com.example.orders.payloads.entities.EsercizioCommercialeDTO;
 import com.example.orders.prodotto.Prodotto;
 import com.example.orders.prodotto.ProdottoRepository;
+import com.example.orders.recensione.Recensione;
+import com.example.orders.recensione.RecensioneRepository;
 import com.example.orders.schedaAnagrafica.SchedaAnagrafica;
 import com.example.orders.schedaAnagrafica.SchedaAnagraficaRepository;
 import jakarta.persistence.EntityManager;
@@ -42,6 +44,9 @@ public class EsercizioCommercialeService {
     ProdottoRepository prodottoRepository;
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    RecensioneRepository recensioneRepository;
 public EsercizioCommerciale putById(long id, EsercizioCommercialeDTO esercizioCommercialeDTO) throws BadRequestException {
     if(esericizioCommercialeRepository.findById(id).isPresent()){
         EsercizioCommerciale esercizioCommerciale= esericizioCommercialeRepository.findById(id).get();
@@ -80,6 +85,9 @@ public boolean deleteById(long id){
     }
        for (Prodotto p: esercizioCommerciale.getProdottos()){
            prodottoRepository.deleteById(p.getId());
+       }
+       for(Recensione r : esercizioCommerciale.getRecensiones()){
+           recensioneRepository.deleteById(r.getId());
        }
         esericizioCommercialeRepository.deleteById(id);
         return true;
