@@ -41,6 +41,7 @@ public class EsercizioCommerciale extends User {
     @JsonIgnore
     private List<Acquisto> acquisto;
     @OneToMany(mappedBy = "esercizioCommerciale")
+    @JsonIgnore
     private List<Recensione> recensiones;
     public EsercizioCommerciale(long id, String email, String password, String nome, Role role, String immagine_profilo, TipoEsercizio tipoEsercizio, String indirizzo,SchedaAnagrafica schedaAnagrafica,Citta citta) {
         super(id, email, password, nome, role, immagine_profilo);

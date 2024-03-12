@@ -43,6 +43,7 @@ private List<Prodotto> prodotti;
 @JsonIgnore
 private List<Acquisto> acquisto;
 @OneToMany(mappedBy = "cliente")
+@JsonIgnore
 private List<Recensione> recensione;
     public Cliente(long id, String email, String password,String nome, Role role, String immagine_profilo, String cognome, int eta,Citta citta) {
         super(id, email, password,nome, role,immagine_profilo);

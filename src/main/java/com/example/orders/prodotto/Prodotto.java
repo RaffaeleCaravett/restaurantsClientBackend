@@ -32,7 +32,9 @@ public class Prodotto {
     inverseJoinColumns = @JoinColumn(name = "ingrediente_id"))
     private List<Ingrediente> ingredientes;
     @ManyToMany(mappedBy = "prodotti")
+    @JsonIgnore
     private List<Cliente> clienteList;
     @ManyToMany(mappedBy = "prodottos")
+    @JsonIgnore
     private List<Acquisto> acquistos;
 }
